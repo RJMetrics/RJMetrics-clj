@@ -8,7 +8,7 @@
 
 (defn- result-is-success?
   [result]
-  (true? (some #(= (:status result) %) [200 201])))
+  (some #(= (:status result) %) [200 201]))
 
 (defn make-api-call
   [url data]
@@ -21,11 +21,12 @@
    (push-data config table-name data API-BASE))
   ([config table-name data url-base]
    (let [{:keys [client-id api-key]} config
-         url (str url-base "/client/" client-id "/table/" table-name "/data?apikey=" api-key)]
+         url (str url-base "/client/" client-id "/table/" table-name "/data?apikey=" api-key)
+         call-url (partial make-api-call url)]
      (if (sequential? data)
-       (map #(->> %
-                  (make-api-call url)
-                  result-is-success?)
+       (map #(-> %
+                 call-url
+                 result-is-success?)
             (partition-all 100 data))
        (list (result-is-success? (make-api-call url data)))))))
 
