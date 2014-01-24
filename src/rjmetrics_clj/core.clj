@@ -1,6 +1,36 @@
-(ns rjmetrics-clj.core)
+(ns rjmetrics-clj.core
+  (:gen-class)
+  (:require [clj-http.client :as client]
+            [cheshire.core :as json]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(def API-BASE "https://connect.rjmetrics.com/v2")
+(def SANDBOX-BASE "https://sandbox-connect.rjmetrics.com/v2")
+
+(defn- result-is-success?
+  [result]
+  (true? (some #(= (:status result) %) [200 201])))
+
+(defn make-api-call
+  [url data]
+  (client/post url
+               {:body (json/generate-string data)
+                :content-type :json}))
+
+(defn push-data
+  ([config table-name data]
+   (push-data config table-name data API-BASE))
+  ([config table-name data url-base]
+   (let [{:keys [client-id api-key]} config
+         url (str url-base "/client/" client-id "/table/" table-name "/data?apikey=" api-key)]
+     (if (sequential? data)
+       (map #(->> %
+                  (make-api-call url)
+                  result-is-success?)
+            (partition-all 100 data))
+       (list (result-is-success? (make-api-call url data)))))))
+
+(defn authenticated?
+  [config]
+  (let [test-data {:keys ["id"]
+                   :id 1}]
+    (push-data config "test" test-data SANDBOX-BASE)))
