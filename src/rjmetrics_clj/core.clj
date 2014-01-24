@@ -8,7 +8,7 @@
 
 (defn- result-is-success?
   [result]
-  (some #(= (:status result) %) [200 201]))
+  (true? (some #(= (:status result) %) [200 201])))
 
 (defn make-api-call
   [url data]
