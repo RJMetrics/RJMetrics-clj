@@ -1,4 +1,4 @@
-(defproject rjmetrics-clj "0.1.0-SNAPSHOT"
+(defproject rjmetrics "0.1.0"
   :description "Clojure Client Library for RJMetrics"
   :url "http://developers.rjmetrics.com"
   :license {:name "Apache License 2.0"
