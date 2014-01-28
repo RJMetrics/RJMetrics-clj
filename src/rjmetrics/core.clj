@@ -1,4 +1,4 @@
-(ns rjmetrics-clj.core
+(ns rjmetrics.core
   (:gen-class)
   (:require [clj-http.client :as client]
             [cheshire.core :as json]))
