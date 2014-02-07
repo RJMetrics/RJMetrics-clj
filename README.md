@@ -1,3 +1,3 @@
 # rjmetrics-clj
 
-Clojure Client Library for RJMetrics
+Clojure Client Library for RJMetrics: http://developers.rjmetrics.com
