@@ -31,9 +31,17 @@
        (map call-url (partition-all MAX-REQUEST-SIZE data))
        (list (make-api-call url data))))))
 
+(defn auth
+  [config url-base]
+  {:pre [(contains? config :api-key)
+         (contains? config :client-id)
+         (string? (:api-key config))
+         (pos? (:client-id config))]}
+  (let [{:keys [client-id api-key]} config
+        url (str url-base "/client/" client-id "/authenticate?apikey=" api-key)]
+    (client/get url {:content-type :json :throw-exceptions false})))
+
 (defn authenticated?
   [config]
-  (let [test-data {:keys ["id"]
-                   :id 1}
-        response (first (push-data config "test" test-data SANDBOX-BASE))]
-    (= 201 (:status response))))
+  (let [response (auth config API-BASE)]
+    (= 200 (:status response))))
