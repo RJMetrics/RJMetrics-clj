@@ -20,5 +20,6 @@
                 {:id 4, :user_id 3 :value 120.01 :sku "zebra-striped-game-boy"}
                 {:id 5, :user_id 5 :value 9.90   :sku "kitten-mittons"}]
         sync-fn (partial sync-order config)]
-    (when (rjmetrics/authenticated? config)
-      (dorun (map sync-fn orders)))))
+    (if (rjmetrics/authenticated? config)
+      (dorun (map sync-fn orders))
+      (print "Error authenticating with the Import API"))))
