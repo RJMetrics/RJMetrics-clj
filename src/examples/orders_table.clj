@@ -13,7 +13,7 @@
 
 (defn run
   []
-  (let [config {:client-id 2 :api-key "7ebbe88c8c0a731ee3addcfa22ff870f"}
+  (let [config {:client-id 0 :api-key "your-api-key"}
         orders [{:id 1, :user_id 1 :value 58.40  :sku "milky-white-suede-shoes"}
                 {:id 2, :user_id 1 :value 23.99  :sku "red-button-down-fleece"}
                 {:id 3, :user_id 2 :value 5.00   :sku "bottle-o-bubbles"}
@@ -22,7 +22,3 @@
         sync-fn (partial sync-order config)]
     (when (rjmetrics/authenticated? config)
       (dorun (map sync-fn orders)))))
-
-(defn -main
-  [_]
-  (run))
