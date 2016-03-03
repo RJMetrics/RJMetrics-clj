@@ -1,4 +1,4 @@
-(defproject rjmetrics "0.1.0"
+(defproject rjmetrics "0.2.0"
   :description "Clojure Client Library for RJMetrics"
   :url "http://developers.rjmetrics.com"
   :license {:name "Apache License 2.0"

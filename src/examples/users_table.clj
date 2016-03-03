@@ -23,6 +23,7 @@
                {:id 4, :email "george@vandelay.com", :acquisition_source "Organic"}
                {:id 5, :email "larry@google.com", :acquisition_source "Organic"}]]
     ;; make sure the client is authenticated before we do anything
-    (when (rjmetrics/authenticated? config)
+    (if (rjmetrics/authenticated? config)
       ;; iterate through users and push data
-      (dorun (map (partial sync-user config) users)))))
+      (dorun (map (partial sync-user config) users))
+      (print "Error authenticating with the Import API"))))
